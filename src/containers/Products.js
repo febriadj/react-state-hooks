@@ -41,6 +41,15 @@ export default function Products() {
     })
   }
 
+  function handleDelete(event) {
+    const productId = event.target.value
+
+    // mem-filter product yang id nya tidak sama dengan nilai inputan
+    const result = products.filter(result => result.id !== parseInt(productId))
+
+    setProducts(result) // update products
+  }
+
   return (
     <div className="products">
       {
@@ -49,6 +58,7 @@ export default function Products() {
           return <GetProducts 
             key = { index } // mengisi key dengan nomer index
             products = { result } // mengirim props ke component GetProducts
+            deleteProduct = { (event) => handleDelete(event) }
           />
         })        
       }
