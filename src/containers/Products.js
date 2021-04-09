@@ -7,7 +7,10 @@ import PostProduct from '../components/PostProduct'
 export default function Products() {
   // membuat state
   const [products, setProducts] = useState( [] ) // state products berbentuk array
-  const [postProduct, setPostProduct] = useState( undefined )
+  const [postProduct, setPostProduct] = useState({
+    name: '',
+    description: ''
+  })
 
   // handle form input saat pengguna mengetik
   function handleChange(event) {
@@ -17,7 +20,10 @@ export default function Products() {
 
   // handle form submit
   function handleSubmit(event) {
-    event.preventDefault() // mematikan refresh halaman saat form disubmit
+    event.preventDefault()
+
+    // menambahkan id products
+    postProduct.id = Date.now()
     
     // menambahkan waktu upload ke dalam state products
     const date = new Date()
@@ -25,7 +31,14 @@ export default function Products() {
       weekday: 'long', day: '2-digit', month: 'long', year: 'numeric'
     })
 
-    setProducts([ postProduct ]) // push postProduct ke state Products
+    setProducts((prevState) => [ ...prevState, postProduct ]) // push postProduct ke state Products
+    
+    // menghapus value dari state postProduct
+    setPostProduct({ 
+      ...postProduct, 
+      name: '', 
+      description: ''
+    })
   }
 
   return (
@@ -43,6 +56,7 @@ export default function Products() {
         // mengirim props ke component PostProduct
         formChange = { (event) => handleChange(event) } // mengembalikan value dari form input
         formSubmit = { function(event) { return handleSubmit(event) } }
+        formValue = { postProduct }
       />
     </div>
   )
